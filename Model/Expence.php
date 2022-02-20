@@ -88,12 +88,38 @@
             $DB->close();
             return $result;
     	}
-        public function ReportSearch($from_date,$to_date,$id_cetagory)
+        public function ReportSearch($from_date , $to_date, $id_cetagory )
         {
-        $DB = new Db();
-        $Query = "SELECT *FROM Expence WHERE id_cetagory = ".$id_cetagory." AND Expence_date BETWEEN '".$from_date."' AND '".$to_date." '";
-        $result = $DB->fetch_result($Query);
-        return $result;
+            $DB = new Db();
+            $Query      = "SELECT *FROM Expence WHERE 1 = 1 ";
+            $QuerySum   = "SELECT SUM(amount) AS TotalExpense FROM Expence WHERE 1 = 1 ";
+
+            if($id_cetagory != '')
+            {
+                $Query .=" AND id_cetagory=".$id_cetagory;
+                $QuerySum .=" AND id_cetagory=".$id_cetagory;
+            }
+            if($from_date != ''){
+                $Query .=" AND Expence_date >= '".$from_date."'";
+                $QuerySum .=" AND Expence_date >= '".$from_date."'";
+            }
+            if($to_date != '')
+            {
+                $Query .=" AND Expence_date <= '".$to_date."'";
+                $QuerySum .=" AND Expence_date <= '".$to_date."'";
+            }
+
+            // return $Query;
+
+            $result = $DB->fetch_result($Query);
+            $TotalExpense = $DB->fetch_result($QuerySum);
+
+            $Expence_Array=[
+                'Expence' => $result,
+                'TotalExpense' =>$TotalExpense,
+            ];
+
+            return $Expence_Array;
     }
 
 

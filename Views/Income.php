@@ -42,15 +42,11 @@ table td{
 <form action="Controller/Income.php" method="POST" enctype="multipart/form-data">
 <select name="id_cetagory" id="id_cetagory">
     <option value="">Select Cetagory </option>
-
-    <?php
-        foreach ($Cetagories as $Cetagory) { ?>
+    <?php foreach ($Cetagories as $Cetagory) { ?>
             <option value="<?php echo $Cetagory['id']; ?>">
-                    <?php echo $Cetagory['name'] ;?>
+                 <?php echo $Cetagory['name'] ;?>
             </option>
-      <?php } ?>
-
-    ?>
+     <?php } ?>
 </select>
 <br>
 <input type="number" name="amount" id="amount" placeholder="add amount"> <br>
@@ -63,32 +59,30 @@ table td{
 <table>
 
 <thead>
+	<tr>	
+		<td>Catagory Name</td>
+		<td>Amount</td>
+		<td>Description</td>
+		<td>Incame Date</td>
+		<td>Action</td>
+	</tr>
+</thead>
+<tbody>
+	<?php if (is_null($Incomes)) 
+	{
+		echo "<tr><td>No data in table</td></tr>";
+	}
+	foreach($Incomes as $category) {?>
 		<tr>
-			
-			<td>Catagory Name</td>
-			<td>Amount</td>
-			<td>Description</td>
-			<td>Incame Date</td>
-			<td>Action</td>
+			<td><?php echo $category['id_cetagory']; ?></td>
+			<td><?php echo $category['amount']; ?></td>
+			<td><?php echo $category['discription']; ?></td>
+			<td><?php echo $category['income_date']; ?></td>
+			<td>
+				<a href="Controller/Income.php?action=edit&id=<?php echo $category['id']; ?>">Edit</a>
+				<a href="Controller/Income.php?action=delete&id=<?php echo $category['id']; ?>">Delete</a>
+			</td>
 		</tr>
-	</thead>
-	<tbody>
-		<?php 
-			if (is_null($Incomes)) {
-				echo "<tr><td>No data in table</td></tr>";
-			}
-			foreach($Incomes as $category) {?>
-			<tr>
-				<td><?php echo $category['id_cetagory']; ?></td>
-				<td><?php echo $category['amount']; ?></td>
-				<td><?php echo $category['discription']; ?></td>
-				<td><?php echo $category['income_date']; ?></td>
-				<td>
-					<a href="Controller/Income.php?action=edit&id=<?php echo $category['id']; ?>">Edit</a>
-
-					<a href="Controller/Income.php?action=delete&id=<?php echo $category['id']; ?>">Delete</a>
-				</td>
-			</tr>
-		<?php } ?>
-	</tbody>
+	<?php } ?>
+</tbody>
 </table>

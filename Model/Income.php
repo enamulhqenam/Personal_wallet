@@ -43,7 +43,7 @@
 
             $DB = new Db();
 
-            echo $Query = "UPDATE Income SET id_cetagory =$this->id_cetagory , amount=$this->amount , discription='$this->discription' ,income_date='$this->income_date' WHERE id=$id ";
+            $Query = "UPDATE Income SET id_cetagory =$this->id_cetagory , amount=$this->amount , discription='$this->discription' ,income_date='$this->income_date' WHERE id=$id ";
 
             try {
                 $DB->execute($Query);
@@ -95,11 +95,38 @@
 		return $result;
 	}
 
-    public function ReporSearch($from_date,$to_date,$id_cetagory){
+    public function ReportSearch($from_date,$to_date,$id_cetagory){
         $DB = new Db();
-        $Query = "SELECT *FROM Income WHERE id_cetagory = ".$id_cetagory." AND  income_date BETWEEN '".$from_date."' AND '".$to_date." '";
+        $Query = "SELECT Income.*, IncomeCetagory.name AS Cetagory_name FROM Income LEFT JOIN IncomeCetagory ON Income.id_cetagory = IncomeCetagory.id WHERE 1 = 1";
+
+        $SumQuery = "SELECT SUM(amount) AS TotalIncome FROM Income WHERE 1 = 1 ";
+
+        if($id_cetagory != ''){
+            $Query .=" AND id_cetagory=".$id_cetagory;
+        }
+
+        if($from_date != '')
+        {
+            $Query      .=" AND income_date >= '".$from_date."'";
+            $SumQuery   .=" AND income_date >= '".$from_date."'";
+        }
+
+        if($to_date != ''){
+            $Query      .=" AND income_date <= '".$to_date."'";
+            $SumQuery   .=" AND income_date <= '".$to_date."'";
+        }
+
+        
+       
         $result = $DB->fetch_result($Query);
-        return $result;
+
+        $TotalIncome = $DB->fetch_result($SumQuery);
+        
+        $ResultArray = [
+            'Incomes'   => $result,
+            'TotalIncome' => $TotalIncome,
+        ];
+        return $ResultArray;
     }
 
         

@@ -1,10 +1,10 @@
 <?php
-include('Model/db.php');
-include('Model/ExpenceCetagory.php');
+	include('Model/db.php');
+	include('Model/ExpenceCetagory.php');
 
-$ExpenceCetagory = new ExpenceCetagory();
+	$ExpenceCetagory = new ExpenceCetagory();
 
-$Cetagories = $ExpenceCetagory->getAll();
+	$Cetagories = $ExpenceCetagory->getAll();
 
 ?>
 
@@ -13,18 +13,16 @@ $Cetagories = $ExpenceCetagory->getAll();
 
 <select name="id_cetagory" id="id_cetagory">
 	<option value="">Select Cetagory</option>
-	<?php 
-		foreach ($Cetagories as $Cetagory) { ?>
-			<option value="<?php echo $Cetagory['id'] ;?>"<?php if($_REQUEST['id_cetagory'] ==$Cetagory['id']){
-				?>
-				selected
-			<?php } ?>>
+	<?php foreach ($Cetagories as $Cetagory) { ?>
+		<option value="<?php echo $Cetagory['id'] ;?>"<?php if($_REQUEST['id_cetagory'] ==$Cetagory['id']){
+			?>
+			selected
+		<?php } ?>>
 			<?php echo $Cetagory['name']; ?>
-
-			</option>
-
+		</option>
 	<?php } ?>
 </select>
+
 <input type="hidden" name="id" value="<?php echo $_REQUEST['id'] ;?> ">
 <input type="number" name="amount" value="<?php echo $_REQUEST['amount'] ;?>">
 <input type="text" name="discription" value="<?php echo $_REQUEST['discription'] ;?>">

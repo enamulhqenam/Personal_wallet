@@ -3,9 +3,11 @@
 2. create table ExpenceCetagory(id bigInt not null auto_increment PRIMARY key , name varchar(255));
 
 3. create table IncomeCetagory (id bigInt not null auto_increment primary key , name varchar(255) );
+
 4. create table Expence(id bigInt not null auto_increment PRIMARY key , id_cetagory bigint , amount int , discription varchar(255) , income_date date);
 
 5. create table Users (id bigInt not null AUTO_INCREMENT PRIMARY key , name varchar(255) , email varchar(255) , phone varchar(255) , password varchar(255));
+
 => db_name : personal_wallate;
 => table name's : 1. Income 2. IncomeCetagory 3. ExpenceCetagory 4.Expence
 

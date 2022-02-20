@@ -1,11 +1,9 @@
 <?php 
-include('Model/db.php');
-include('Model/ExpenceCetagory.php');
+	include('Model/db.php');
+	include('Model/ExpenceCetagory.php');
 
-
-$ExpenceCetagory = new ExpenceCetagory();
-
-$Cetagories = $ExpenceCetagory->getAll();
+	$ExpenceCetagory = new ExpenceCetagory();
+	$Cetagories = $ExpenceCetagory->getAll();
 
 ?>
 
@@ -17,29 +15,27 @@ $Cetagories = $ExpenceCetagory->getAll();
 </form>
 
 <table>
-	<thead>
-		<tr>
-			<th>Id</th>
-			<th>Name</th>
-			<th>Action</th>
-		</tr>
-	</thead>
-	<tbody>
-		<?php if(is_null($Cetagories)){
+<thead>
+	<tr>
+		<th>Id</th>
+		<th>Name</th>
+		<th>Action</th>
+	</tr>
+</thead>
+<tbody>
+	<?php if(is_null($Cetagories)){
 			echo "<tr><td colspan='3'> No DAta in table </td></tr>";
 		}
-		foreach ($Cetagories as $Cetagory) { ?>
-			
-		<tr>
-			<td> <?php  echo $Cetagory['id']; ?> </td>
-			<td> <?php  echo $Cetagory['name'] ;?> </td>
-			<td>
-				<a href="Controller/ExpenceCetagory.php?action=edit&id=<?php echo $Cetagory['id'] ; ?>">Edit</a>
-				<a href="Controller/ExpenceCetagory.php?action=delete&id=<?php echo $Cetagory['id'] ; ?>">Delete</a>
-			</td>
-		</tr>
-
-		<?php } ?>
+	foreach ($Cetagories as $Cetagory) { ?>		
+	<tr>
+		<td> <?php  echo $Cetagory['id']; ?> </td>
+		<td> <?php  echo $Cetagory['name'] ;?> </td>
+		<td>
+		<a href="Controller/ExpenceCetagory.php?action=edit&id=<?php echo $Cetagory['id'] ; ?>">Edit</a>
+			<a href="Controller/ExpenceCetagory.php?action=delete&id=<?php echo $Cetagory['id'] ; ?>">Delete</a>
+		</td>
+	</tr>
+	<?php } ?>
 		
-	</tbody>
+</tbody>
 </table>

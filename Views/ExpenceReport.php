@@ -1,32 +1,37 @@
-<?php  session_start(); 
+<?php
   include('Model/db.php');  
   include('Model/ExpenceCetagory.php');
   include('Model/Expence.php');
 
-  $ExpenceCetagory = new ExpenceCetagory();
+  $ExpenceCetagory  = new ExpenceCetagory();
   $ExCetagories     = $ExpenceCetagory->getAll();
 
-  $Expence     = new Expence();
-  $ECetagories =$Expence->getAll();
+  if(isset($_REQUEST['submit']) && $_REQUEST['submit']=='View Expence Report')
+  {
+    $id_cetagory  = $_POST['id_cetagory'];
+    $from_date    = $_POST['from_date'];
+    $to_date      = $_POST['to_date'] ;
+
+    $Expence  = new Expence();
+    $Expeses  = $Expence->ReportSearch($from_date , $to_date, $id_cetagory );
+
+  }
+
 
 ?>
 
 
-<form action="Controller/ExpenceReport.php" method="POST" enctype="multipart/form-data">
+<form action="index.php?view=ExpenceReport" method="POST" enctype="multipart/form-data">
 
 <select name="id_cetagory" id="id_cetagory">
+
   <option value="">Select Cetagory</option>
-  <?php 
-    foreach ($ExCetagories as $Cetagory){ ?>
-      <option value="<?php echo $Cetagory['id'] ;?>" <?php if($_REQUEST['id_cetagory']==$Cetagory['id']){?>
-        selected
-        <?php } ?>>
-          
-          <?php echo $Cetagory['name'] ?>
-        </option>
-    
-  
-  <?php } ?>
+    <?php foreach ($ExCetagories as $Cetagory){ ?>
+      <option value="<?php echo $Cetagory['id'] ;?>">  
+        <?php echo $Cetagory['name'] ?>
+      </option>
+    <?php } ?>
+
 </select>
 
   <label for="from_date">From Date :</label>  
@@ -36,7 +41,7 @@
   <input type="submit" name="submit" value="View Expence Report">
 </form>
 
-<?php $data_list = $_SESSION['result'] ?>
+
 <table>
   <thead>
     <tr>
@@ -46,23 +51,27 @@
       <th>Expence Date</th>
     </tr>
   </thead>
+
   <tbody>
-    
-     <?php foreach ($data_list as $Cetagory) { ?>
-         <tr>
-
-           <td><?php echo $Cetagory['id_cetagory']; ?></td>
-
-          <td><?php echo $Cetagory['amount']; ?></td> 
-
-          <td><?php echo $Cetagory['discription']; ?></td>
-
-          <td><?php echo $Cetagory['Expence_date']; ?></td>
-
-         </tr>
-
+     <?php foreach ($Expeses['Expence'] as $Expense) { ?>
+        <tr>
+          <td><?php echo $Expense['id_cetagory']; ?></td>
+          <td><?php echo $Expense['amount']; ?></td> 
+          <td><?php echo $Expense['discription']; ?></td>
+          <td><?php echo $Expense['Expence_date']; ?></td>
+        </tr>
       <?php } ?>
-     
-    
+
+      <tr>
+        <td>Total Expense:</td>
+        <td><?php echo $Expeses['TotalExpense'][0][0] ;?></td>
+      </tr>
   </tbody>
 </table>
+<div class="printbutton">
+<tr>
+<td>
+  <button onclick="window.print()" style="background-color: #4CAF50; width: 80px ; height: 50px; margin-top:50px; margin-left:800px;">Print</button>
+</td>
+</tr>
+</div>
